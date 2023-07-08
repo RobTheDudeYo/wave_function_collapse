@@ -4,21 +4,24 @@ import time
 
 
 debug_mode = False
-grid_size = 40
-tileset = "tileset2" # tileset1 or tileset2
+more_random = False
+super_random_threshold = 4 # if the entropy is too high, collapse any random cell
+random_starting_cells = 1
+grid_size = 50  # 100 takes a long time
+tileset = "tileset2"  # tileset1 or tileset2
 # weights for the random tile selection
 weights = {
-    "0": 0,
-    "1": 5,
-    "2": 5,
-    "3": 5,
-    "4": 5,
-    "5": 1,
-    "6": 1,
-    "7": 1,
-    "8": 1,
-    "9": 10,
-    "10": 10,
+    "0": 1,
+    "1": 10,
+    "2": 10,
+    "3": 10,
+    "4": 10,
+    "5": 10,
+    "6": 10,
+    "7": 10,
+    "8": 10,
+    "9": 50,
+    "10": 50,
 }
 
 rules = {
@@ -86,7 +89,9 @@ pygame.init()
 clock = pygame.time.Clock()
 window = pygame.display.set_mode((width, height))
 pygame.display.set_caption("WFC")
-tiles = [pygame.image.load(f"./{tileset}/{i}.png").convert_alpha() for i in range(0, 11)]
+tiles = [
+    pygame.image.load(f"./{tileset}/{i}.png").convert_alpha() for i in range(0, 11)
+]
 
 cells = []
 collapsed_cells = []
@@ -171,7 +176,10 @@ def main():
 
         if update_possibilities():
             if not collapse_cells():
-                collapse_random_cell_with_lowest_possibilities()
+                if more_random:
+                    collapse_random_cell()
+                else:
+                    collapse_random_cell_with_lowest_entropy()
 
         if not finished:
             if len(superposition_cells) == 0:
@@ -213,7 +221,18 @@ def collapse_cells():
     return collapse
 
 
-def collapse_random_cell_with_lowest_possibilities():
+def collapse_random_cell():
+    global superposition_cells
+    global collapsed_cells
+    if len(superposition_cells) > 0:
+        cell = random.choice(superposition_cells)
+        cell.collapse()
+        collapsed_cells.append(cell)
+        superposition_cells.remove(cell)
+        return True
+    return False
+
+def collapse_random_cell_with_lowest_entropy():
     global superposition_cells
     global collapsed_cells
     lowest_possibilities = 11
@@ -226,6 +245,8 @@ def collapse_random_cell_with_lowest_possibilities():
             if len(cell.possible_tiles) == lowest_possibilities:
                 temp.append(cell)
         if len(temp) > 0:
+            if lowest_possibilities > super_random_threshold:
+                return collapse_random_cell()
             cell = random.choice(temp)
             # pick a random number from the possible tiles, weighted towards lower numbers (hopefully)
             weights = get_weights(cell.possible_tiles)
@@ -296,16 +317,17 @@ def reset():
     for row in cells:
         for cell in row:
             superposition_cells.append(cell)
-    # pick a starting cell
-    start_cell = cells[random.randint(0, grid_size - 1)][
-        random.randint(0, grid_size - 1)
-    ]
-    start_cell.status = "c"
-    collapsed_cells.append(start_cell)
-    superposition_cells.remove(start_cell)
-    start_cell.tile = random.choice(start_cell.possible_tiles)
-    start_cell.possible_tiles = [start_cell.tile]
-    print(f"Starting with cell {start_cell}")
+    for _ in range(random_starting_cells):
+        # pick a starting cell
+        start_cell = cells[random.randint(0, grid_size - 1)][
+            random.randint(0, grid_size - 1)
+        ]
+        start_cell.status = "c"
+        collapsed_cells.append(start_cell)
+        superposition_cells.remove(start_cell)
+        start_cell.tile = random.choice(start_cell.possible_tiles)
+        start_cell.possible_tiles = [start_cell.tile]
+        print(f"Starting with cell {start_cell}")
 
 
 def draw_list_sizes():
