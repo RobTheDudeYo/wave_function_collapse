@@ -3,12 +3,27 @@ import random
 import time
 
 
+# absolute trash with grid_size > 10
 debug_mode = False
+
+# if True always choose a completely random tile
+# rather than one with lowest entropy
 more_random = False
-super_random_threshold = 4 # if the entropy is too high, collapse any random cell
+
+# if the entropy is too high, collapse any random cell
+# (if there are more than the set number of cells in
+# the lowest entropy list)
+super_random_threshold = 4
+
+# sprinkle some random tiles
 random_starting_cells = 1
-grid_size = 50  # 100 takes a long time
-tileset = "tileset2"  # tileset1 or tileset2
+
+# always a square. 100 takes a long time
+grid_size = 10
+
+# pick a tile set. "tileset1" or "tileset2"
+tileset = "tileset2"
+
 # weights for the random tile selection
 weights = {
     "0": 1,
@@ -24,6 +39,7 @@ weights = {
     "10": 50,
 }
 
+# edge rules
 rules = {
     "up": {
         "0": ["0", "1", "2", "5", "6", "7", "10"],
@@ -166,6 +182,19 @@ def main():
         if finished and not screenshot:
             screenshot = True
             pygame.image.save(window, f"./output/{int(time.time())}.png")
+        if debug_mode:
+            for cell in superposition_cells:
+                pygame.draw.rect(
+                    window,
+                    (255, 0, 0),
+                    (
+                        cell.x * cell_size,
+                        cell.y * cell_size + 1,
+                        (cell_size - 1),
+                        (cell_size - 1),
+                    ),
+                    1,
+                )
 
         draw_list_sizes()
         # draw_fps()
@@ -231,6 +260,7 @@ def collapse_random_cell():
         superposition_cells.remove(cell)
         return True
     return False
+
 
 def collapse_random_cell_with_lowest_entropy():
     global superposition_cells
