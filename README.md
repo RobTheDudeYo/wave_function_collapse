@@ -2,10 +2,7 @@
 
 This is an implementation of the Wave Function Collapse (WFC) algorithm in Python, based on the first half of Daniel Shiffman's video tutorial on the subject (https://youtu.be/rI_y2GAlQFM).
 
-# tileset1
-![example of tileset1](./output/1688826233.png)
 
-# tileset2
 ![example of tileset2](./output/1688828917.png)
 ## Description
 
@@ -48,3 +45,14 @@ This program requires the following dependencies:
 ## License
 
 This project is provided without any specific license. You are free to use and modify the code for personal or educational purposes. However, please refer to the licenses of the dependencies (if any) for their usage terms.
+
+
+<div style="display: flex;">
+    <img src="./output/1688838978.png" style="width:50%; margin: 5px;" />
+    <img src="./output/1688841831.png" style="width:50%; margin: 5px" />
+</div>
+
+<div style="display: flex;">
+    <img src="./output/1688834439.png" style="width:50%; margin: 5px" />
+    <img src="./output/1688834606.png" style="width:50%; margin: 5px" />
+</div>
