@@ -47,12 +47,7 @@ This program requires the following dependencies:
 This project is provided without any specific license. You are free to use and modify the code for personal or educational purposes. However, please refer to the licenses of the dependencies (if any) for their usage terms.
 
 
-<div style="display: flex;">
-    <img src="./output/1688838978.png" style="width:50%; margin: 5px;" />
-    <img src="./output/1688841831.png" style="width:50%; margin: 5px" />
-</div>
-
-<div style="display: flex;">
-    <img src="./output/1688834439.png" style="width:50%; margin: 5px" />
-    <img src="./output/1688834606.png" style="width:50%; margin: 5px" />
-</div>
+![example of tileset2](./output/1688838978.png)
+![example of tileset2](./output/1688841831.png)
+![example of tileset2](./output/1688834439.png)
+![example of tileset2](./output/1688834606.png)
