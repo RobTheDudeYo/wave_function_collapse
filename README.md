@@ -2,6 +2,8 @@
 
 This is an implementation of the Wave Function Collapse (WFC) algorithm in Python, based on the first half of Dan Shiffman's video tutorial on the subject (https://youtu.be/rI_y2GAlQFM).
 
+![example output](./output/1688805693.png)
+
 ## Description
 
 The Wave Function Collapse algorithm is used to generate tile-based patterns by propagating constraints through a grid of cells. Each cell has a set of possible tile states, and the algorithm collapses cells by eliminating incompatible states based on neighboring cells. The process continues until either all cells have collapsed or contradictions arise.
