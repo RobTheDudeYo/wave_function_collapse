@@ -19,7 +19,7 @@ super_random_threshold = 4
 random_starting_cells = 1
 
 # always a square. 100 takes a long time
-grid_size = 10
+grid_size = 20
 
 # pick a tile set. "tileset1" or "tileset2"
 tileset = "tileset2"
@@ -96,19 +96,26 @@ rules = {
 }
 
 
+# set the screen size and do some funky maths with it
+# to get the sizes of other stuff
 screen_size = 1000
 cell_size = int(screen_size // grid_size)
 width, height = cell_size * grid_size, cell_size * grid_size
 cols, rows = grid_size, grid_size
 
+
+# pygame setup
 pygame.init()
 clock = pygame.time.Clock()
 window = pygame.display.set_mode((width, height))
 pygame.display.set_caption("WFC")
+
+# load the tileset
 tiles = [
     pygame.image.load(f"./{tileset}/{i}.png").convert_alpha() for i in range(0, 11)
 ]
 
+# lists to store the cells
 cells = []
 collapsed_cells = []
 superposition_cells = []
@@ -119,10 +126,14 @@ class Cell:
         self.x = x
         self.y = y
         self.tile = "0"
+        self.status = "s"
+
+        # delete tiles from here to exclude them completely
+        # may break the program if you delete too many
         self.possible_tiles = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
-        self.status = "s"  # Superposition, Collapsed
 
     def update_possible_tiles(self, cells):
+        """update the possible tiles for this cell"""
         is_updated = False
         if len(self.possible_tiles) > 1:
             if self.x > 0:
@@ -153,6 +164,7 @@ class Cell:
         return is_updated
 
     def collapse(self):
+        """collapse the cell to a single tile"""
         self.status = "c"
         self.tile = random.choice(self.possible_tiles)
         self.possible_tiles = [self.tile]
@@ -165,8 +177,6 @@ def main():
     reset()
     running = True
     global finished
-    global cells
-    global collapsed_cells
     global superposition_cells
     global screenshot
 
@@ -175,25 +185,13 @@ def main():
 
         window.fill(0)
 
-        # drawing all the things
         draw()
 
+        # take a screenshot when finished
+        # just the one though!
         if finished and not screenshot:
             screenshot = True
             pygame.image.save(window, f"./output/{int(time.time())}.png")
-        if debug_mode:
-            for cell in superposition_cells:
-                pygame.draw.rect(
-                    window,
-                    (255, 0, 0),
-                    (
-                        cell.x * cell_size,
-                        cell.y * cell_size + 1,
-                        (cell_size - 1),
-                        (cell_size - 1),
-                    ),
-                    1,
-                )
 
         draw_list_sizes()
         # draw_fps()
@@ -216,9 +214,6 @@ def main():
 
 
 def update_possibilities():
-    global cells
-    global finished
-    global superposition_cells
     changes = 1
     while changes > 0:
         changes = 0
@@ -288,7 +283,6 @@ def collapse_random_cell_with_lowest_entropy():
 
 
 def get_weights(possible_tiles):
-    global weights
     result = []
     for i in possible_tiles:
         result.append(weights[i])
@@ -297,8 +291,6 @@ def get_weights(possible_tiles):
 
 def draw():
     """Draws the board"""
-    global cells
-    global superposition_cells
     for row in cells:
         for cell in row:
             window.blit(
@@ -308,22 +300,36 @@ def draw():
 
     if debug_mode:
         # draw the grid
-        for x in range(0, width, cell_size):
-            pygame.draw.line(window, (255, 255, 255), (x - 1, 0), (x, height), width=1)
-        for y in range(0, height, cell_size):
-            pygame.draw.line(window, (255, 255, 255), (-1, y), (width, y), width=1)
-        # write cell.possible_tiles in each cell
-        for row in cells:
-            for cell in row:
-                font = pygame.font.SysFont("Arial", 8)
-                text = font.render(f"{cell.possible_tiles}", True, (255, 255, 255))
-                window.blit(
-                    text,
-                    (
-                        cell.x * cell_size + cell_size // 2 - text.get_width() // 2,
-                        cell.y * cell_size + cell_size // 2 - text.get_height() // 2,
-                    ),
-                )
+        # for x in range(0, width, cell_size):
+        #     pygame.draw.line(window, (255, 255, 255), (x - 1, 0), (x, height), width=1)
+        # for y in range(0, height, cell_size):
+        #     pygame.draw.line(window, (255, 255, 255), (-1, y), (width, y), width=1)
+
+        # write len(cell.possible_tiles) in each cell
+        for cell in superposition_cells:
+            font = pygame.font.SysFont("Arial", 18)
+            text = font.render(f"{len(cell.possible_tiles)}", True, (255, 255, 255))
+            window.blit(
+                text,
+                (
+                    cell.x * cell_size + cell_size // 2 - text.get_width() // 2,
+                    cell.y * cell_size + cell_size // 2 - text.get_height() // 2,
+                ),
+            )
+
+        # draw boxes around superposition cells
+        for cell in superposition_cells:
+            pygame.draw.rect(
+                window,
+                (255, 0, 0),
+                (
+                    cell.x * cell_size,
+                    cell.y * cell_size + 1,
+                    (cell_size - 1),
+                    (cell_size - 1),
+                ),
+                1,
+            )
 
 
 def reset():
@@ -371,12 +377,9 @@ def draw_list_sizes():
 
 def draw_fps():
     """Draws the fps on the screen"""
-    global clock
     font = pygame.font.SysFont("Arial", 12)
-    text = font.render(str(int(clock.get_fps())), True, (0, 0, 0))
+    text = font.render(str(int(clock.get_fps())), True, (255, 255, 255))
     window.blit(text, (5, height - 20))
-
-
 
 
 def check_events():
