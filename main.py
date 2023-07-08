@@ -2,19 +2,17 @@ import pygame
 import random
 import time
 
-debug_mode = False
-grid_size = 50
-screen_size = 1000
-cell_size = int(screen_size // grid_size)
-width, height = cell_size * grid_size, cell_size * grid_size
-cols, rows = grid_size, grid_size
 
-weights = { # weights for the random tile selection
+debug_mode = False
+grid_size = 40
+tileset = "tileset2" # tileset1 or tileset2
+# weights for the random tile selection
+weights = {
     "0": 0,
-    "1": 2,
-    "2": 2,
-    "3": 2,
-    "4": 2,
+    "1": 5,
+    "2": 5,
+    "3": 5,
+    "4": 5,
     "5": 1,
     "6": 1,
     "7": 1,
@@ -79,11 +77,16 @@ rules = {
 }
 
 
+screen_size = 1000
+cell_size = int(screen_size // grid_size)
+width, height = cell_size * grid_size, cell_size * grid_size
+cols, rows = grid_size, grid_size
+
 pygame.init()
 clock = pygame.time.Clock()
 window = pygame.display.set_mode((width, height))
 pygame.display.set_caption("WFC")
-tiles = [pygame.image.load(f"./tiles/{i}.png").convert_alpha() for i in range(0, 11)]
+tiles = [pygame.image.load(f"./{tileset}/{i}.png").convert_alpha() for i in range(0, 11)]
 
 cells = []
 collapsed_cells = []

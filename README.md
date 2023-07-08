@@ -2,8 +2,11 @@
 
 This is an implementation of the Wave Function Collapse (WFC) algorithm in Python, based on the first half of Daniel Shiffman's video tutorial on the subject (https://youtu.be/rI_y2GAlQFM).
 
-![example output](./output/1688826233.png)
+# tileset1
+![example of tileset1](./output/1688826233.png)
 
+# tileset2
+![example of tileset2](./output/1688828917.png)
 ## Description
 
 The Wave Function Collapse algorithm is used to generate tile-based patterns by propagating constraints through a grid of cells. Each cell has a set of possible tile states, and the algorithm collapses cells by eliminating incompatible states based on neighboring cells. The process continues until either all cells have collapsed or contradictions arise.
@@ -32,6 +35,7 @@ You can customize the following parameters in the `main.py` file:
 
 - `debug_mode`: Set to `True` to display debug information such as grid lines and possible tile states.
 - `grid_size`: The size of the grid (number of cells per row and column).
+- `tileset`: a string, the name of the tileset folder
 - `weights`: weights to use when selecting a random tile
 
 ## Dependencies
