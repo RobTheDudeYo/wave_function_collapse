@@ -17,7 +17,7 @@ This implementation uses the Pygame library to provide a graphical representatio
 3. Open a terminal or command prompt and navigate to the directory containing the code files.
 4. Run the following command to execute the program:
    ```
-   python wfc.py
+   python main.py
    ```
 5. The generated patterns will be displayed in the Pygame window.
 
