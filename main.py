@@ -3,11 +3,25 @@ import random
 import time
 
 debug_mode = False
-grid_size = 10
+grid_size = 100
 screen_size = 1000
 cell_size = int(screen_size // grid_size)
 width, height = cell_size * grid_size, cell_size * grid_size
 cols, rows = grid_size, grid_size
+
+weights = { # weights for the random tile selection
+    "0": 0,
+    "1": 2,
+    "2": 2,
+    "3": 2,
+    "4": 2,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "8": 1,
+    "9": 10,
+    "10": 10,
+}
 
 rules = {
     "up": {
@@ -63,6 +77,7 @@ rules = {
         "10": ["2", "3", "7", "10"],
     },
 }
+
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -139,7 +154,7 @@ def main():
 
         # drawing all the things
         draw()
-        
+
         if finished and not screenshot:
             screenshot = True
             pygame.image.save(window, f"./output/{int(time.time())}.png")
@@ -210,16 +225,25 @@ def collapse_random_cell_with_lowest_possibilities():
         if len(temp) > 0:
             cell = random.choice(temp)
             # pick a random number from the possible tiles, weighted towards lower numbers (hopefully)
-            weights = [i for i in range(1, len(cell.possible_tiles) + 1)]
-            cell.possible_tiles = [
-                random.choices(cell.possible_tiles, weights=weights)[0]
-            ]
+            weights = get_weights(cell.possible_tiles)
+            new_possible_tiles = random.choices(
+                cell.possible_tiles, cum_weights=weights, k=1
+            )
+            cell.possible_tiles = [new_possible_tiles[0]]
             cell.collapse()
             collapsed_cells.append(cell)
             superposition_cells.remove(cell)
             return True
 
     return False
+
+
+def get_weights(possible_tiles):
+    global weights
+    result = []
+    for i in possible_tiles:
+        result.append(weights[i])
+    return result
 
 
 def draw():
@@ -236,14 +260,14 @@ def draw():
     if debug_mode:
         # draw the grid
         for x in range(0, width, cell_size):
-            pygame.draw.line(window, (255, 255, 255), (x, 0), (x, height))
+            pygame.draw.line(window, (255, 255, 255), (x - 1, 0), (x, height), width=1)
         for y in range(0, height, cell_size):
-            pygame.draw.line(window, (255, 255, 255), (0, y), (width, y))
+            pygame.draw.line(window, (255, 255, 255), (-1, y), (width, y), width=1)
         # write cell.possible_tiles in each cell
         for row in cells:
             for cell in row:
                 font = pygame.font.SysFont("Arial", 8)
-                text = font.render(f"{cell.possible_tiles}", True, (255))
+                text = font.render(f"{cell.possible_tiles}", True, (255, 255, 255))
                 window.blit(
                     text,
                     (
