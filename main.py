@@ -163,7 +163,6 @@ class Cell:
 
 def main():
     reset()
-    counter = 0
     running = True
     global finished
     global cells
@@ -198,10 +197,6 @@ def main():
 
         draw_list_sizes()
         # draw_fps()
-        # if not finished:
-        #     counter = draw_counter(counter)
-        # else:
-        #     draw_counter(counter)
 
         if update_possibilities():
             if not collapse_cells():
@@ -382,13 +377,6 @@ def draw_fps():
     window.blit(text, (5, height - 20))
 
 
-def draw_counter(counter):
-    """Draws the tick counter on the screen"""
-    font = pygame.font.SysFont("Arial", 12)
-    text = font.render(str(counter), True, (0))
-    window.blit(text, (5, height - 20))
-    counter += 1
-    return counter
 
 
 def check_events():
