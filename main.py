@@ -3,7 +3,7 @@ import random
 import time
 
 debug_mode = False
-grid_size = 100
+grid_size = 50
 screen_size = 1000
 cell_size = int(screen_size // grid_size)
 width, height = cell_size * grid_size, cell_size * grid_size
