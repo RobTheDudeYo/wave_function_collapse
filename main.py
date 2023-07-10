@@ -6,7 +6,7 @@ import time
 # absolute trash with grid_size > 10
 debug_mode = False
 
-# always a square. 100 takes a long time
+# always a square. 100 takes ~10 minutes
 grid_size = 10
 
 # pick a tile set. "tileset1" or "tileset2"
