@@ -13,7 +13,7 @@ grid_size = 10
 tileset = "tileset2"
 
 # weights for the random tile selection
-# the function get_weights()
+# used by get_weights()
 weights = {
     "0": 100000,
     "1": 5000,
