@@ -19,7 +19,8 @@ This implementation uses the Pygame library to provide a graphical representatio
    ```
    python main.py
    ```
-5. The generated patterns will be displayed in the Pygame window. Upon completion a screenshot of the result will be saved to the output folder.
+5. The generated patterns will be displayed in the Pygame window.
+6. Upon completion a clean screenshot of the result will be saved to the output folder and the time take to generate will be displayed on the center of the screen.
 
 ## Controls
 
