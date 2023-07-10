@@ -14,7 +14,7 @@ tileset = "tileset1"
 
 # weights for the random tile selection
 weights = {
-    "0": 10000,
+    "0": 100000,
     "1": 5000,
     "2": 5000,
     "3": 5000,
