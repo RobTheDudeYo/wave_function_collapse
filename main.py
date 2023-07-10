@@ -6,35 +6,23 @@ import time
 # absolute trash with grid_size > 10
 debug_mode = False
 
-# if True always choose a completely random tile
-# rather than one with lowest entropy
-more_random = False
-
-# if the entropy is too high, collapse any random cell
-# (if there are more than the set number of cells in
-# the lowest entropy list)
-super_random_threshold = 4
-
-# sprinkle some random tiles
-random_starting_cells = 1
-
 # always a square. 100 takes a long time
 grid_size = 20
 
 # pick a tile set. "tileset1" or "tileset2"
-tileset = "tileset2"
+tileset = "tileset1"
 
 # weights for the random tile selection
 weights = {
-    "0": 1,
-    "1": 10,
-    "2": 10,
-    "3": 10,
-    "4": 10,
-    "5": 10,
-    "6": 10,
-    "7": 10,
-    "8": 10,
+    "0": 10,
+    "1": 25,
+    "2": 25,
+    "3": 25,
+    "4": 25,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "8": 1,
     "9": 50,
     "10": 50,
 }
@@ -94,6 +82,19 @@ rules = {
         "10": ["2", "3", "7", "10"],
     },
 }
+
+
+# if True always choose a completely random tile
+# rather than one with lowest entropy
+more_random = False
+
+# if the entropy is too high, collapse any random cell
+# (if there are more than the set number of cells in
+# the lowest entropy list)
+super_random_threshold = 4
+
+# sprinkle some random tiles
+random_starting_cells = 1
 
 
 # set the screen size and do some funky maths with it
@@ -177,7 +178,6 @@ def main():
     reset()
     running = True
     global finished
-    global superposition_cells
     global screenshot
 
     while running:
