@@ -7,24 +7,24 @@ import time
 debug_mode = False
 
 # always a square. 100 takes a long time
-grid_size = 20
+grid_size = 25
 
 # pick a tile set. "tileset1" or "tileset2"
 tileset = "tileset1"
 
 # weights for the random tile selection
 weights = {
-    "0": 10,
-    "1": 25,
-    "2": 25,
-    "3": 25,
-    "4": 25,
+    "0": 10000,
+    "1": 5000,
+    "2": 5000,
+    "3": 5000,
+    "4": 5000,
     "5": 1,
     "6": 1,
     "7": 1,
     "8": 1,
-    "9": 50,
-    "10": 50,
+    "9": 10000,
+    "10": 10000,
 }
 
 # edge rules
@@ -126,7 +126,7 @@ class Cell:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.tile = "0"
+        self.tile = "s"
         self.status = "s"
 
         # delete tiles from here to exclude them completely
@@ -271,7 +271,7 @@ def collapse_random_cell_with_lowest_entropy():
             # pick a random number from the possible tiles, weighted towards lower numbers (hopefully)
             weights = get_weights(cell.possible_tiles)
             new_possible_tiles = random.choices(
-                cell.possible_tiles, cum_weights=weights, k=1
+                cell.possible_tiles, weights=weights, k=1
             )
             cell.possible_tiles = [new_possible_tiles[0]]
             cell.collapse()
@@ -293,10 +293,25 @@ def draw():
     """Draws the board"""
     for row in cells:
         for cell in row:
-            window.blit(
-                pygame.transform.scale(tiles[int(cell.tile)], (cell_size, cell_size)),
-                (cell.x * cell_size, cell.y * cell_size),
-            )
+            if cell.tile == "s":
+                pygame.draw.rect(
+                    window,
+                    (100, 100, 100, 0.1),
+                    (
+                        cell.x * cell_size,
+                        cell.y * cell_size + 1,
+                        (cell_size - 1),
+                        (cell_size - 1),
+                    ),
+                    1,
+                )
+            else:
+                window.blit(
+                    pygame.transform.scale(
+                        tiles[int(cell.tile)], (cell_size, cell_size)
+                    ),
+                    (cell.x * cell_size, cell.y * cell_size),
+                )
 
     if debug_mode:
         # draw the grid
@@ -318,18 +333,18 @@ def draw():
             )
 
         # draw boxes around superposition cells
-        for cell in superposition_cells:
-            pygame.draw.rect(
-                window,
-                (255, 0, 0),
-                (
-                    cell.x * cell_size,
-                    cell.y * cell_size + 1,
-                    (cell_size - 1),
-                    (cell_size - 1),
-                ),
-                1,
-            )
+        # for cell in superposition_cells:
+        #     pygame.draw.rect(
+        #         window,
+        #         (255, 0, 0),
+        #         (
+        #             cell.x * cell_size,
+        #             cell.y * cell_size + 1,
+        #             (cell_size - 1),
+        #             (cell_size - 1),
+        #         ),
+        #         1,
+        #     )
 
 
 def reset():
