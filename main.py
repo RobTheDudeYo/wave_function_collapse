@@ -7,7 +7,7 @@ import time
 debug_mode = False
 
 # always a square. 100 takes ~10 minutes
-grid_size = 10
+grid_size = 50
 
 # pick a tile set. "tileset1" or "tileset2"
 tileset = "tileset2"
