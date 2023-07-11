@@ -32,8 +32,8 @@ This program requires the following dependencies:
 
 ## Controls
 
-- Press the **Space** key to reset the board and generate a new pattern.
-- Press the **Escape** key or click the **X** button to exit the program.
+- Press the **Spacebar** to reset the board and generate a new pattern.
+- Press **Escape** or close the window to exit the program.
 
 ## Customization
 
