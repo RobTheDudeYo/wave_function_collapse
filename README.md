@@ -9,7 +9,7 @@ This is an implementation of the Wave Function Collapse (WFC) algorithm in Pytho
 
 The Wave Function Collapse algorithm is used to generate tile-based patterns by propagating constraints through a grid of cells. Each cell has a set of possible tile states, and the algorithm collapses cells by eliminating incompatible states based on neighboring cells. The process continues until either all cells have collapsed or contradictions arise.
 
-This implementation uses the Pygame library to provide a graphical representation of the generated patterns. The grid is displayed on a window, and the tiles are rendered as images.
+This implementation uses the Pygame library to provide a graphical representation of the generated patterns.
 
 ## Dependencies
 
@@ -43,11 +43,6 @@ You can customize the following parameters in the `main.py` file:
 - `grid_size`: The size of the grid (number of cells per row and column).
 - `tileset`: a string, the name of the tileset folder
 - `weights`: weights to use when selecting a random tile
-
-## License
-
-This project is provided without any specific license. You are free to use and modify the code for personal or educational purposes. However, please refer to the licenses of the dependencies (if any) for their usage terms.
-
 
 ![example of tileset2](./output/1688838978.png)
 ![example of tileset2](./output/1688841831.png)
